@@ -2,6 +2,7 @@ package com.alves.organizze.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
                 String textoSenha = campoSenha.getText().toString();
                 if( !textEmail.isEmpty() ){
                     if( !textoSenha.isEmpty()){
-
+                        abrirTelaPrincipal();
                     }else{
                         Toast.makeText(LoginActivity.this, "Preencha a senha!", Toast.LENGTH_SHORT).show();
                     }
@@ -42,4 +43,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void abrirTelaPrincipal (){
+        startActivity(new Intent(this, PrincipalActivity.class));
+        finish();   // fecha a tela de login, já que abre a telaPrincipal
+    }
+
 }
