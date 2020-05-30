@@ -22,35 +22,39 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_principal" />
-        <com.github.clans.fab.FloatingActionMenu
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="10dp"
+        fab:menu_colorNormal="@color/colorAccent"
+        fab:menu_colorPressed="@color/colorAccent"
+        fab:menu_icon="@drawable/add_white_24dp">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_despesa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="10dp"
-            fab:menu_icon="@drawable/add_white_24dp"
-            fab:menu_colorNormal="@color/colorAccent"
-            fab:menu_colorPressed="@color/colorAccent"
-            >
-            <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/menu_despesa"
-                android:onClick="adicionarDespesa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_white_24dp"
-                fab:fab_colorNormal="@color/colorPrimaryDespesa"
-                fab:menu_fab_label="Despesa"
-                fab:menu_fab_size="mini"/>
+            android:onClick="adicionarDespesa"
+            android:src="@drawable/remove_white_24dp"
+            fab:fab_colorNormal="@color/colorPrimaryDespesa"
+            fab:menu_fab_label="Despesa"
+            app:fab_size="mini"
 
-            <com.github.clans.fab.FloatingActionMenu
-                android:id="@+id/menu_receita"
-                android:onClick="adicionarReceita"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_white_24dp"
-                fab:fab_colorNormal="@color/colorPrimaryReceita"
-                fab:menu_fab_label="Receita"
-                fab:menu_fab_size="mini"/>
-        </com.github.clans.fab.FloatingActionMenu>
+            />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/menu_receita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="adicionarReceita"
+            android:src="@drawable/add_white_24dp"
+            fab:fab_colorNormal="@color/colorPrimaryReceita"
+            fab:menu_fab_label="Receita"
+            app:fab_size="mini"
+            />
+    </com.github.clans.fab.FloatingActionMenu>
 
 
 
