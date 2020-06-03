@@ -92,6 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/check_white_24dp" />
+        app:srcCompat="@drawable/check_white_24dp"
+        android:onClick="salvarDespesa"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
