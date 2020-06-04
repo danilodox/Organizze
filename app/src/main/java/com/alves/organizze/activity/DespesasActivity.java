@@ -122,6 +122,9 @@ public class DespesasActivity extends AppCompatActivity {
         });
     }
 
+
+
+
     public void atualizarDespesa( Double despesa){
         String emailUsuario= autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
