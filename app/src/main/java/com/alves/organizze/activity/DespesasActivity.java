@@ -1,5 +1,6 @@
 package com.alves.organizze.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -9,11 +10,16 @@ import android.widget.Toast;
 
 import com.alves.organizze.R;
 import com.alves.organizze.config.ConfiguracaoFirebase;
+import com.alves.organizze.helper.Base64Custom;
 import com.alves.organizze.helper.DateUtil;
 import com.alves.organizze.model.Movimentacao;
+import com.alves.organizze.model.Usuario;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 public class DespesasActivity extends AppCompatActivity {
 
@@ -21,6 +27,9 @@ public class DespesasActivity extends AppCompatActivity {
     private Movimentacao movimentacao;
     private DatabaseReference firebaseref = ConfiguracaoFirebase.getFirebaseDatabase();
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+    private Double despesaTotal;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,7 @@ public class DespesasActivity extends AppCompatActivity {
 
         // Preenche o campo data com a data atual
         campoData.setText( DateUtil.dataAtual() );
+        recuperarDespesatotal();
     }
 
     public void salvarDespesa(View view){
@@ -42,11 +52,17 @@ public class DespesasActivity extends AppCompatActivity {
         if(validarCampoDespesa()){
             movimentacao = new Movimentacao();
             String data = campoData.getText().toString();
-            movimentacao.setValor( Double.parseDouble( campoValor.getText().toString() ) );
+
+            Double valorRecuperado = Double.parseDouble( campoValor.getText().toString() );
+
+            movimentacao.setValor( valorRecuperado);
             movimentacao.setCategoria( campoCategoria.getText().toString() );
             movimentacao.setDescricao( campoDescricao.getText().toString());
             movimentacao.setData( data );
             movimentacao.setTipo( "d");
+
+            Double despesaAtualizada = despesaTotal + valorRecuperado;
+            atualizarDespesa( despesaAtualizada );
 
             movimentacao.salvar(data);
         }
@@ -85,6 +101,31 @@ public class DespesasActivity extends AppCompatActivity {
     }
 
     public void recuperarDespesatotal(){
-        
+        //AULA 20.
+
+        String emailUsuario= autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+
+        DatabaseReference usuarioRef = firebaseref.child("usuarios").child(idUsuario);
+
+        usuarioRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                despesaTotal = usuario.getDespesaTotal();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void atualizarDespesa( Double despesa){
+        String emailUsuario= autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64( emailUsuario );
+
+        DatabaseReference usuarioRef = firebaseref.child("usuarios").child(idUsuario);
     }
 }
