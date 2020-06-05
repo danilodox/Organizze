@@ -10,7 +10,8 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.AppCompat.DayNight">
+        android:theme="@style/Theme.AppCompat.DayNight"
+        app:elevation="0dp"> //remover a sembra na toolbar
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
