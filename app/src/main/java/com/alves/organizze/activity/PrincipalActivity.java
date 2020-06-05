@@ -10,10 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.alves.organizze.R;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 public class PrincipalActivity extends AppCompatActivity {
+
+    private MaterialCalendarView calendarView;
+    private TextView textoSaudacao, textoSaldo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +29,13 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        textoSaldo = findViewById(R.id.textSaldo);
+        textoSaudacao = findViewById(R.id.textSaudacao);
+
+
+        calendarView = findViewById(R.id.calendarView);
+        configuraCalendarView();
 
        /* FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +49,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+
     public void adicionarDespesa(View view){
         startActivity(new Intent(this, DespesasActivity.class));
     }
@@ -43,5 +59,16 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
 
+
+    private void configuraCalendarView() {
+        CharSequence meses[] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Outubro", "Setembro", "Novembro", "Dezembro"};
+        calendarView.setTitleMonths( meses ); //Colocar os nomes dos meses de acordo com array acima
+        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+
+            }
+        });
+    }
 
 }
