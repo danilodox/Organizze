@@ -43,6 +43,7 @@ public class ReceitasActivity extends AppCompatActivity {
         // Preenche o campo data com a data atual
         campoData.setText( DateUtil.dataAtual() );
         recuperarReceitatotal();
+        finish();
     }
 
     public void salvarReceita(View view){
@@ -64,6 +65,8 @@ public class ReceitasActivity extends AppCompatActivity {
 
             movimentacao.salvar(data);
         }
+
+
 
 
     }
