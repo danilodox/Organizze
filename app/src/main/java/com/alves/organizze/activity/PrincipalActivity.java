@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,8 @@ public class PrincipalActivity extends AppCompatActivity {
     private TextView textoSaudacao, textoSaldo;
     private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
     private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+    private DatabaseReference usuarioRef;
+    private ValueEventListener valueEventListenerUsuario;
 
     private Double despesaTotal = 0.0, receitaTotal = 0.0, resumoUsuario = 0.0;
 
@@ -61,13 +64,20 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+    protected void onStart(){
+        super.onStart();
+        recuperarResumo();
+    }
+
     public void recuperarResumo(){
         String emailUsuario= autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
 
-        DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
+        Log.i("Evento", "evento foi adicionado!");
 
-        usuarioRef.addValueEventListener(new ValueEventListener() {
+        usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
+
+        valueEventListenerUsuario = usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Usuario usuario = dataSnapshot.getValue( Usuario.class );
@@ -132,4 +142,9 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
+    protected void onStop() {
+        super.onStop();
+        Log.i("Evento", "evento foi removido!");
+        usuarioRef.removeEventListener( valueEventListenerUsuario );
+    }
 }
