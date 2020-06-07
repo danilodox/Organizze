@@ -12,6 +12,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.Menu;
@@ -42,6 +44,8 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private Double despesaTotal = 0.0, receitaTotal = 0.0, resumoUsuario = 0.0;
 
+    private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +60,21 @@ public class PrincipalActivity extends AppCompatActivity {
 
 
         calendarView = findViewById(R.id.calendarView);
+        recyclerView = findViewById(R.id.reclycerMovimentos);
         configuraCalendarView();
-        recuperarResumo();
+
+        //Configurar adapter
+
+        //Configurar RecyclerView
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager( layoutManager );
+        recyclerView.setHasFixedSize(true);
+        //recyclerView.setAdapter();
+
+
+        //recuperarResumo();
+
 
 
 
