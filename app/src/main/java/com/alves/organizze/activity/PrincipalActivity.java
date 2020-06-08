@@ -3,8 +3,10 @@ package com.alves.organizze.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.alves.organizze.adapter.AdapterMovimentacao;
 import com.alves.organizze.config.ConfiguracaoFirebase;
 import com.alves.organizze.helper.Base64Custom;
+import com.alves.organizze.model.Movimentacao;
 import com.alves.organizze.model.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,6 +34,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -45,6 +49,10 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0, receitaTotal = 0.0, resumoUsuario = 0.0;
 
     private RecyclerView recyclerView;
+
+    private AdapterMovimentacao adapterMovimentacao;
+
+    private List<Movimentacao> movimentacoes = new ArrayList<>();
 
 
     @Override
@@ -65,12 +73,14 @@ public class PrincipalActivity extends AppCompatActivity {
 
         //Configurar adapter
 
+        adapterMovimentacao = new AdapterMovimentacao(movimentacoes, this);
+
         //Configurar RecyclerView
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager( layoutManager );
         recyclerView.setHasFixedSize(true);
-        //recyclerView.setAdapter();
+        recyclerView.setAdapter( adapterMovimentacao );
 
 
         //recuperarResumo();
@@ -81,10 +91,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
-    protected void onStart(){
-        super.onStart();
-        recuperarResumo();
-    }
+
 
     public void recuperarResumo(){
         String emailUsuario= autenticacao.getCurrentUser().getEmail();
@@ -163,5 +170,9 @@ public class PrincipalActivity extends AppCompatActivity {
         super.onStop();
         Log.i("Evento", "evento foi removido!");
         usuarioRef.removeEventListener( valueEventListenerUsuario );
+    }
+    protected void onStart(){
+        super.onStart();
+        recuperarResumo();
     }
 }
