@@ -99,9 +99,9 @@ public class PrincipalActivity extends AppCompatActivity {
         String emailUsuario= autenticacao.getCurrentUser().getEmail();
         String idUsuario = Base64Custom.codificarBase64( emailUsuario );
 
-        movimentacaoRef.child("movimentacao")
-                .child( idUsuario )
-                .child( mesAnoSelecionado );
+        movimentacaoRef = firebaseRef.child("movimentacao")
+                                     .child( idUsuario )
+                                     .child( mesAnoSelecionado );
         valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +109,9 @@ public class PrincipalActivity extends AppCompatActivity {
                 //percorrer todos os filhos do firebase
                 for (DataSnapshot dados: dataSnapshot.getChildren()){
                     Movimentacao movimentacao = dados.getValue( Movimentacao.class );
+                    movimentacoes.add( movimentacao );
                 }
+                adapterMovimentacao.notifyDataSetChanged();
             }
 
             @Override
@@ -187,12 +189,18 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView.setTitleMonths( meses ); //Colocar os nomes dos meses de acordo com array acima
 
         CalendarDay dataAtual = calendarView.getCurrentDate();
-        mesAnoSelecionado = String.valueOf((dataAtual.getMonth() + 1) + " " + dataAtual.getYear());
+
+        String mesSelecionado = String.format("%02d", (dataAtual.getMonth() + 1)); //formatar o mes para vim com dois digitos
+        mesAnoSelecionado = String.valueOf((mesSelecionado) + " " + dataAtual.getYear());
 
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                String mesSelecionado = String.format("%02d", (date.getMonth() + 1));
                 mesAnoSelecionado = String.valueOf((date.getMonth() + 1) + " " + date.getYear());
+
+                movimentacaoRef.removeEventListener( valueEventListenerMovimentacoes);
+                recuperarMovimentacoes();
             }
         });
     }
